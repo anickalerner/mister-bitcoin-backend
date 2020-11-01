@@ -1,10 +1,9 @@
 
 const dbService = require('../../services/db.service')
-const ObjectId = require('mongodb').ObjectId
 
 module.exports = {
     query,
-    getById,
+    getByName,
     remove,
     update,
     add    
@@ -21,36 +20,35 @@ async function query() {
     }
 }
 
-async function getById(id) {
+async function getByName(name) {
     const collection = await dbService.getCollection('users')
     try {
-        const user = await collection.findOne({ "_id": ObjectId(id) })
+        const user = await collection.findOne({ "name": name })
         return user
     } catch (err) {
-        console.log(`ERROR: while finding user ${id}`)
+        console.log(`ERROR: while finding user ${name}`)
         throw err;
     }
 }
-async function remove(id) {
+async function remove(name) {
     const collection = await dbService.getCollection('users')
     try {
-        await collection.deleteOne({ "_id": ObjectId(id) })
+        await collection.deleteOne({ "name": name })
     } catch (err) {
-        console.log(`ERROR: cannot remove user ${id}`)
+        console.log(`ERROR: cannot remove user ${name}`)
         throw err;
     }
 }
 
-async function update(id, user) {
-
+async function update(user) {
+console.log(user);
     const collection = await dbService.getCollection('users')
     var replacement = JSON.parse(JSON.stringify(user));    
-    delete replacement._id
     try {
-        await collection.updateOne({ "_id": ObjectId(id) }, { $set: replacement })
+        await collection.updateOne({ "name": user.name }, { $set: replacement })
         return user
     } catch (err) {
-        console.log(`ERROR: cannot update user ${user._id}`)
+        console.log(`ERROR: cannot update user ${user.name}`)
         throw err;
     }
 }

@@ -27,8 +27,12 @@ if (process.env.NODE_ENV === 'production') {
     app.use(cors(corsOptions));
 }
 
+const authRoutes = require('./api/auth/routes')
+const userRoutes = require('./api/user/routes')
 const contactRoutes = require('./api/contact/routes')
 
+app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
 app.use('/api/contact', contactRoutes)
 
 app.get('/**', (req, res) => {

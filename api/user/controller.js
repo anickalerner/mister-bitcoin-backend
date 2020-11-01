@@ -2,7 +2,6 @@ const userService = require('./service')
 module.exports = {
     getUsers,
     getUser,
-    addUser,
     deleteUser,
     updateUser
 }
@@ -12,23 +11,17 @@ async function getUsers(req, res) {
 }
 
 async function getUser(req, res) {
-    const user = await userService.getById(req.params.id)
+    const user = await userService.getByName(req.params.name)
     res.send(user)
 }
 
-async function addUser(req, res) {
-    const user = req.body;
-    const addedUser = await userService.add(user);
-    res.send(addedUser);
-}
-
 async function deleteUser(req, res) {
-    await userService.remove(req.params.id)
+    await userService.remove(req.params.name)
     res.end()
 }
 
 async function updateUser(req, res) {
     const user = req.body;
-    const updatedUser = await userService.update(req.params.id, user)
+    const updatedUser = await userService.update(user)
     res.send(updatedUser)
 }
